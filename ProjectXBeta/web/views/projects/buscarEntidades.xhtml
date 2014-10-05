@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+                <p:panelGrid id="grd" columns="6" style="font-family: normis;font-size: 15px" rendered="true">
+                <f:facet name="header">  
+                    <p:outputLabel style="font-family: normis;font-size: 35px"  value="Nuevo Proyecto"/>
+                </f:facet>  
+                
+                <h:outputLabel for="abrevP" value="Abreviatura Proyecto:" style="font-family: normis;font-size: 35px"/>  
+                <p:inputText style="width: 200px" id="abrevP" value="#{proyecto.abrevProyecto}" required="true" />
+                
+                <h:outputLabel for="nomP" value="Nombre Proyecto:" style="font-family: normis;font-size: 35px"/>  
+                <p:inputText style="width: 200px" id="nomP" value="#{proyecto.nombreProyecto}" required="true"/>
+                
+                
+                <h:outputLabel for="descP" value="Descripcion Proyecto:" style="font-family: normis;font-size: 35px"/>  
+                <p:inputTextarea style="width: 200px" id="descP" value="#{proyecto.descProyecto}" required="true"/>
+                
+                
+            </p:panelGrid>
+                <div align="left">
+                    <p:commandButton ajax="false" action="#{nav.goPage('creacionFormulario')}"  value="Crear" icon="ui-icon-check" style="font-family: normis;font-size: 23px;">                
+                        <f:actionListener binding="#{proyecto.crearProyecto()}"/>
+                        <f:setPropertyActionListener value="#{proyecto}" target="#{listaProy.selectedProy}"/>            
+                        <f:actionListener binding="#{formulario.setFkeyProject(listaProy.selectedProy.IDProyecto)}"/>
+                        <f:actionListener binding="#{listaForm.setSelected(formulario)}"/>
+                        <f:actionListener binding="#{listaForm.update()}"/>
+                    </p:commandButton>         
+                </div>
+            </h:form>
+            
+            <h:form rendered="true">
+                <p:dataTable id="dataTable" var="proy" value="#{listaProy.lista}" style="font-size: 14px"
+                             emptyMessage="No existen proyectos creados en el momento."
+                             paginator="true" rows="10"
+                             scrollHeight="10"
+                             editable="true"
+
+                             >
+
+                    <f:facet name="header">
+                        Listado de Proyectos
+                    </f:facet>
+                    <p:column>
+                        <p:commandButton ajax="false" icon="ui-icon-search" action="#{nav.goPage('creacionFormulario')}">
+                            <f:setPropertyActionListener value="#{proy}" target="#{listaProy.selectedProy}" />
+                            <f:actionListener binding="#{formulario.setFkeyProject(listaProy.selectedProy.IDProyecto)}"/>
+                            <f:setPropertyActionListener value="#{formulario}" target="#{listaForm.selected}" />
+                            <f:actionListener binding="#{listaForm.update()}"/>
+                            
+                                          
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Abrev." filterBy="abrevProyecto" sortBy="abrevProyecto">
+                        
+                           
+                                <h:outputText value="#{proy.abrevProyecto}" />
+                      
+                    </p:column>      
+                    <p:column headerText="Proyecto" filterBy="nombreProyecto" sortBy="nombreProyecto">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{proy.nombreProyecto}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{proy.nombreProyecto}" />
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Descripción" filterBy="descProyecto" sortBy="descProyecto">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{proy.descProyecto}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{proy.descProyecto}" />
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Editar">
+                        <p:rowEditor/>   
+                    </p:column>
+                    <p:column headerText="Eliminar">
+                        <p:commandButton ajax="false" update="@this" icon="ui-icon-close">
+                            <f:setPropertyActionListener value="#{proy}" target="#{listaProy.selectedProy}" />
+                            <f:actionListener binding="#{listaProy.deleteProyecto()}"/>
+                            <f:actionListener binding="#{listaProy.update()}"/>
+                        </p:commandButton>
+                    </p:column>
+                    
+                    
+               
+
+                    <!-- AJAX-->
+                    <p:ajax event="rowEdit"  listener="#{listaProy.onEdit}"/>
+                    <p:ajax event="rowEditCancel" listener="#{listaProy.onCancel}" />
+
+                    <f:facet name="footer">
+                        En total hay  <h:outputText value="#{listaProy.size}"/> proyecto(s).
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </h:body>
+
+    </f:view>
+</html>

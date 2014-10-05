@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+             <link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:panelGrid id="grd" columns="6" style="font-family: normis;font-size: 25px" rendered="true">
+                <f:facet name="header">  
+                    <p:outputLabel style="font-family: normis;font-size: 35px"  value="Nuevo Proyecto"/>
+                </f:facet>  
+                
+                <h:outputLabel for="abrevP" value="Abreviatura Proyecto:" />  
+                <p:inputText style="width: 100px" id="abrevP" value="#{proyecto.abrevProyecto}" required="true" styleClass="btnNuevoP"/>
+                
+                <h:outputLabel for="nomP" value="Nombre Proyecto:" />  
+                <p:inputText style="width: 100px" id="nomP" value="#{proyecto.nombreProyecto}" required="true"/>
+                
+                
+                <h:outputLabel for="descP" value="Descripcion Proyecto:" />  
+                <p:inputTextarea style="width: 150px" id="descP" value="#{proyecto.descProyecto}" required="true"/>
+                
+                
+            </p:panelGrid>
+                <div align="left">
+                    <p:commandButton ajax="false" action="#{nav.goPage('creacionFormulario')}"  value="Crear" icon="ui-icon-check" style="font-family: normis;font-size: 23px;">                
+                        <f:setPropertyActionListener value="#{proyecto}" target="#{listaProy.selectedProy}" />  
+                        <f:actionListener binding="#{proyecto.crearProyecto()}"/>
+                    </p:commandButton>
+                     
+                
+                </div>
+            </h:form>
+        </h:body>
+
+    </f:view>
+</html>
+
+
+
+

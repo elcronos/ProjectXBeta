@@ -1,0 +1,36 @@
+------------------------------------------------------------------------------------------------
+--		Generado Automaticamente por MPDF(MetaProgrammingFaces)
+--		Dia: 5	Mes: 40	Año :2014
+------------------------------------------------------------------------------------------------
+
+--Drop Table cap_prueba;
+
+-- Tabla : cap_prueba
+
+		Create Table cap_prueba (
+			HOLA Number(10) NOT NULL,
+			PRUEBA Number(10) NOT NULL
+		);
+
+------------------------------------------------------------------------------------------------
+-- Llave primaria para cap_prueba (hola)
+------------------------------------------------------------------------------------------------
+
+	Alter Table cap_prueba ADD Constraint Phola Primary Key (hola);
+
+------------------------------------------------------------------------------------------------
+
+	Create Sequence SEC_cap_prueba INCREMENT BY 1 START WITH 10 MAXVALUE 1.0E28
+	MINVALUE 1 NOCYCLE  CACHE 20 NOORDER;
+
+------------------------------------------------------------------------------------------------
+-- TRIGGER para cap_prueba (hola)
+------------------------------------------------------------------------------------------------
+
+	CREATE OR REPLACE TRIGGER TRG_cap_prueba_INSERT BEFORE INSERT ON cap_prueba
+	FOR EACH ROW
+	BEGIN
+		If :New.hola = 0 Then
+			Select SEC_cap_prueba.NextVal Into :New.hola From Dual;
+		End If;
+	END;

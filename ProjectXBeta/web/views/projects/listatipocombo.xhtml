@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+
+        <h:form>
+            <p:panelGrid id="grd" columns="5" style="font-family: normis;font-size: 25px" rendered="true">
+                <f:facet name="header">  
+                    <p:outputLabel style="font-family: normis;font-size: 35px"  value="Nuevo Tipo Dato"/>
+                </f:facet>  
+
+                <h:outputLabel for="tipoDato" value="Tipo Dato:" />  
+                <p:inputText style="width: 100px" id="tipoDato" value="#{tipoD.tipoDato}" required="true" styleClass="btnNuevoP"/>
+
+                <h:outputLabel for="tipoV" value="Valor:" />  
+                <p:inputText style="width: 100px" id="tipoV" value="#{tipoD.tipoValue}" required="true"/>
+                
+                <p:commandButton ajax="false" update=":table:dataTable" value="Crear" icon="ui-icon-check" style="font-family: normis;font-size: 23px;">                
+                    
+                    <f:actionListener binding="#{tipoD.insert()}"/>
+                    <f:actionListener binding="#{listaTipo.update()}"/>
+                </p:commandButton>
+                <!--
+                <h:outputLabel for="descP" value="Descripcion Proyecto:" />  
+                <p:inputTextarea style="width: 150px" id="descP" value="#{tipoD.SQLTipo}" required="true"/>-->
+
+                
+
+            </p:panelGrid>
+        </h:form>
+
+        <h:form id="table">
+            <p:dataTable id="dataTable" var="tipo" value="#{listaTipo.lista}" style="font-size: 14px"
+                         emptyMessage="Lista Vacia"
+                         paginator="true" rows="10"
+                         scrollHeight="10"
+                         editable="true"
+                         >
+                <f:facet name="header">
+                    Tipo Dato
+                </f:facet>
+
+                <p:column headerText="Tipo Dato" filterBy="tipoDato" sortBy="tipoDato">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{tipo.tipoDato}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{tipo.tipoDato}" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column> 
+                <p:column headerText="Valor" filterBy="tipoValue" sortBy="tipoValue">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{tipo.tipoValue}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{tipo.tipoValue}" />
+                        </f:facet>
+                    </p:cellEditor>               
+                </p:column>
+                <p:column headerText="Editar">
+                    <p:rowEditor/>   
+                </p:column>
+                <p:column headerText="Eliminar">
+                    <p:commandButton ajax="false" update="@this" icon="ui-icon-close">
+                        <f:setPropertyActionListener value="#{tipo}" target="#{listaTipo.selected}" />
+                        <f:actionListener binding="#{listaTipo.deleteForm()}"/>
+                        <f:actionListener binding="#{listaTipo.update()}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </f:view>
+</html>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+            <h:outputStylesheet library="css" name="style.css"  />
+     </head>
+    <h:body>
+        <ui:composition>
+       <h:form>
+                        <p:slideMenu backLabel="Regresar"  style="font-family: normis;height: 600px" >
+                            <p:submenu label="Nuevo Proyecto" style="font-family: normis;font-size: 25px;height: 50px">
+                                <p:menuitem>
+                                    <h:commandButton  styleClass="btnNuevoP" style="font-family: normis; font-size: 30px;"  value="Nuevo Proyecto"  action="#{nav.goPage('nuevoProyecto')}">        
+                                                               
+                                    </h:commandButton>
+                                    
+                                </p:menuitem>                   
+
+                                <p:menuitem>
+                                    <h:commandButton  styleClass="btnNuevoP" style="font-family: normis; font-size: 30px;"  value="Buscar Entidades" action="#{nav.goPage('buscarEntidades')}">
+                                        <f:actionListener binding="#{listaProy.update()}" />
+                                    </h:commandButton>
+                                </p:menuitem> 
+                                
+                                <p:menuitem>
+                                    <h:commandButton styleClass="btnNuevoP" style="font-family: normis; font-size: 30px;"   value="Generar Script BD" action="#{nav.goPage('generarScript')}">
+                                       
+                                    </h:commandButton>
+                                </p:menuitem>  
+                                
+                                <p:menuitem>
+                                    <h:commandButton styleClass="btnNuevoP" style="font-family: normis; font-size: 30px;" value="Generar Codigo" action="#{nav.goPage('generarCodigo')}">
+                                        
+                                    </h:commandButton>
+                                </p:menuitem>           
+
+                            </p:submenu>
+                            <p:submenu label="Nuevo Tipo Combo" style="font-family: normis;font-size: 25px;height: 50px">
+                                   <p:menuitem>                                
+                                    <h:commandButton styleClass="btnNuevoP" style="font-family: normis; font-size: 30px;"  value="Lista Tipos" action="#{nav.goPage('listatipocombo')}">          
+                                        
+                                    </h:commandButton>
+                                </p:menuitem>    
+                                <p:menuitem>                                
+                                    <h:commandButton styleClass="btnNuevoP" style="font-family: normis; font-size: 30px;"  value="Crear Tipos" action="#{nav.goPage('creatipocombo')}">          
+                                        
+                                    </h:commandButton>
+                                </p:menuitem>    
+                            </p:submenu>
+                            <p:submenu label="Panel Administracion" style="font-family: normis;font-size: 25px;height: 50px">
+
+                            </p:submenu>
+
+                        </p:slideMenu>
+                    </h:form>
+        </ui:composition>
+    </h:body>
+
+</html>

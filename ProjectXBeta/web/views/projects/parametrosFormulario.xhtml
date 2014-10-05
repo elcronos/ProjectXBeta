@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        
+        <h:body>
+            <h:form>
+                <p:commandButton ajax="false" value="Volver" actionListener="#{nav.goBack()}"/>
+            </h:form>
+            <h:form>
+                
+                 
+                <p:panelGrid id="info" columns="4" style="font-size: 12px"  rendered="true">
+                    <f:facet name="header">  
+                        Información del Proyecto
+                    </f:facet> 
+                    <h:outputLabel style="font-family: normis;font-size:25px" for="abrevP" value="Abreviatura Proyecto:" />  
+                    <h:outputText id="abrevP" value="#{listaProy.selectedProy.abrevProyecto}"/>
+                    <h:outputLabel style="font-family: normis;font-size:25px" for="nombP" value="Nombre Proyecto:" />  
+                    <h:outputText id="nombP" value="#{listaProy.selectedProy.nombreProyecto}"/>                       
+                    <h:outputLabel style="font-family: normis;font-size:25px" for="descP" value="Descripción Proyecto:" />
+                    <h:outputText id="descP"  value="#{listaProy.selectedProy.descProyecto}"/>
+                    <h:outputLabel style="font-family: normis;font-size:25px" for="nombF" value="Nombre Formulario:" />
+                    <h:outputText id="nombF"  value="#{listaForm.selected.nameFormulario}"/>
+                    <h:outputLabel style="font-family: normis;font-size:25px" for="descF" value="Descripción Formulario:" />
+                    <h:outputText id="descF"  value="#{listaForm.selected.descFormulario}"/>
+                </p:panelGrid>
+
+                <p:panelGrid id="grd" columns="8" style="font-size: 10px;" rendered="true">
+                    <f:facet name="header">  
+                        Nuevo Parametro
+                    </f:facet>  
+
+                    <h:outputLabel for="nomForm" value="Nombre Tipo:" />  
+                    <p:inputText id="nomForm" value="#{parametro.nameCampo}" required="true"/>
+                    <h:outputLabel for="tipoForm" value="Tipo:" />  
+                    <h:selectOneMenu id="tipoForm" value="#{parametro.tipoDato}" disabled="false">
+                        <f:selectItems value="#{parametro.comboTipo}" />                        
+                    </h:selectOneMenu>
+                    <h:outputLabel for="esObli" value="Obligatorio?" /> 
+                    <h:selectOneMenu id="esObli" value="#{parametro.esObligatorio}" disabled="false">
+                        <f:selectItems value="#{parametro.cboPara}" />                        
+                    </h:selectOneMenu>
+                    <h:outputLabel for="esPkey" value="Es Pkey?" /> 
+                    <p:selectBooleanButton id="esPkey" value="#{parametro.esPkeyBol}" onLabel="Si" offLabel="No" /> 
+                     
+                    <p:commandButton ajax="false" update=":table:dataTable" value="Crear">
+                        <f:actionListener binding="#{parametro.setFkeyForm(listaForm.selected.IDProjectFormulario)}"/>
+                        <f:actionListener binding="#{parametro.insert()}"/>
+                        <f:actionListener binding="#{listaPara.update()}"/>
+                    </p:commandButton>
+                </p:panelGrid>
+            </h:form>
+            <h:form id="table">
+                <p:dataTable id="dataTable" var="parame" value="#{listaPara.listaParametros}" style="font-size: 14px"
+                             emptyMessage="Lista Vacia"
+                             paginator="true" rows="5"
+                             scrollHeight="5"
+                             editable="true"
+                             >
+                    <f:facet name="header">
+                        Parametros Formulario
+                    </f:facet>
+
+                    <p:column headerText="Campo" filterBy="nameCampo" sortBy="nameCampo">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parame.nameCampo}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{parame.nameCampo}" />
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column> 
+                    <p:column headerText="Tipo Dato" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parame.tipoDato}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{parame.tipoDato}" >
+                                    <f:selectItems value="#{parame.comboTipo}" />
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+
+                    </p:column>
+                    <p:column headerText="¿Obligatorio?" filterBy="esObligatorio" sortBy="esObligatorio">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parame.esObligatorio}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu id="tipoVar" value="#{parame.esObligatorio}" >
+                                    <f:selectItems value="#{parametro.cboPara}" />
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column headerText="¿Es Pkey?" filterBy="esPkey" sortBy="esPkey">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parame.esPkey}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu id="esPkey" value="#{parame.esPkey}" >
+                                    <f:selectItems value="#{parametro.cboPara}" />
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Editar">
+                        <p:rowEditor/>   
+                    </p:column>
+                    <p:column headerText="Eliminar">
+                        <p:commandButton ajax="false" update="@this" icon="ui-icon-close">
+                            <f:setPropertyActionListener value="#{parame}" target="#{listaPara.selected}" />
+                            <f:actionListener binding="#{listaPara.deleteForm()}"/>
+                            <f:actionListener binding="#{listaPara.updatePara()}"/>
+                            <f:actionListener binding="#{listaPara.update()}"/>
+                        </p:commandButton>
+                    </p:column>
+                     <!-- AJAX-->
+                        <p:ajax event="rowEdit"  listener="#{listaPara.onEdit}"/>
+                        <p:ajax event="rowEditCancel" listener="#{listaPara.onCancel}"/>
+
+                        <f:facet name="footer">
+                            En total hay  <h:outputText value="#{listaPara.size}"/> pametros(s).
+                        </f:facet> </p:dataTable>
+            </h:form>
+            <h:form>
+            
+                 <p:commandButton id="downloadLink" value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)"   
+                            icon="ui-icon-arrowthichk-s">  
+                        <f:actionListener binding="#{geneCode.setAbrev(listaProy.selectedProy.abrevProyecto)}" />
+                        <f:actionListener binding="#{geneCode.setNombForm(listaForm.selected.nameFormulario)}"/>
+                        <f:actionListener binding="#{geneCode.crearNombEnti()}"/>
+                        <f:actionListener binding="#{geneCode.setLista(listaPara.listaParametros)}"/>
+                        <f:actionListener binding="#{geneCode.generateAll()}"/>
+                        <p:fileDownload value="#{fileDownload.file}" />  
+                    </p:commandButton> 
+            </h:form>
+        </h:body>
+
+    </f:view>
+</html>

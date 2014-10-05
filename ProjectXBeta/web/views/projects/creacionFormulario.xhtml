@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <link href="../../css/style.css" rel="stylesheet" type="text/css"/>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Quickly Project Faces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+                <p:commandButton ajax="false" value="Volver" actionListener="#{nav.goBack()}"/>
+            </h:form>
+            <table>
+                <tr>
+                    <td>
+                <h:form id="form">
+                    <p:panelGrid id="info" columns="2" style="font-size: 12px"  rendered="true">
+                        <f:facet name="header">  
+                            Información Proyecto
+                        </f:facet> 
+                        <h:outputLabel style="font-family: normis;font-size:25px" for="abrevP" value="Abreviatura Proyecto:" />  
+                        <h:outputText id="abrevP" value="#{listaProy.selectedProy.abrevProyecto}"/>
+                        <h:outputLabel style="font-family: normis;font-size:25px" for="nombP" value="Nombre Proyecto:" />  
+                        <h:outputText id="nombP" value="#{listaProy.selectedProy.nombreProyecto}"/>                       
+                        <h:outputLabel style="font-family: normis;font-size:25px" for="descP" value="Descripción Proyecto:" />
+                        <h:outputText id="descP"  value="#{listaProy.selectedProy.descProyecto}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid id="grd" columns="11" style="font-size: 10px;" rendered="true">
+                        <f:facet name="header">  
+                            Nuevo Formulario
+                        </f:facet>  
+                        
+                        <h:outputLabel for="nomForm" value="Nombre Formulario:" />  
+                        <p:inputText id="nomForm" value="#{formulario.nameFormulario}" required="true"/>
+
+                        <h:outputLabel for="descForm" value="Descripción Formulario:" />  
+                        <h:inputTextarea id="descForm" value="#{formulario.descFormulario}" required="true"/>
+
+                        <p:commandButton ajax="false" update="dataTable" value="Crear">
+                            <f:actionListener binding="#{formulario.setFkeyProject(listaProy.selectedProy.IDProyecto)}"/>
+                            <f:actionListener binding="#{formulario.insert()}"/>
+                            <f:actionListener binding="#{listaForm.setFkeyProyecto(listaProy.selectedProy.IDProyecto)}"/>
+                            <f:actionListener binding="#{listaForm.update()}"/>
+                        </p:commandButton>
+
+                    </p:panelGrid>
+                </h:form>
+
+                </td>                                      
+                </tr>
+                <tr>
+                    <td>
+                <h:form>
+                    <p:dataTable id="dataTable" var="form" value="#{listaForm.listaFormulario}" style="font-size: 14px"
+                                 emptyMessage="No existen Formularios creados para el Proyecto"
+                                 paginator="true" rows="10"
+                                 scrollHeight="10"
+                                 editable="true"
+
+                                 >
+
+                        <f:facet name="header">
+                            Listado de Formularios
+                        </f:facet>
+                        <p:column>
+                            <p:commandButton ajax="false" icon="ui-icon-search" action="#{nav.goPage('parametrosFormulario')}">
+                                <f:setPropertyActionListener value="#{form}" target="#{listaForm.selected}" />
+                                <f:actionListener binding="#{listaPara.setFkeyFormulario(listaForm.selected.IDProjectFormulario)}"/>
+                                <f:actionListener binding="#{listaPara.update()}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column headerText="Nombre Formulario" filterBy="nameFormulario" sortBy="nameFormulario">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{form.nameFormulario}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{form.nameFormulario}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Descripción" filterBy="descFormulario" sortBy="descFormulario">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{form.descFormulario}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputTextarea value="#{form.descFormulario}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Editar">
+                            <p:rowEditor/>   
+                        </p:column>
+                        <p:column headerText="Eliminar">
+                            <p:commandButton ajax="false" update="@this" icon="ui-icon-close">
+                                <f:setPropertyActionListener value="#{form}" target="#{listaForm.selected}" />
+                                <f:actionListener binding="#{listaForm.deleteForm()}"/>
+                                <f:actionListener binding="#{listaForm.update()}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <!-- AJAX-->
+                        <p:ajax event="rowEdit"  listener="#{listaForm.onEdit}"/>
+                        <p:ajax event="rowEditCancel" listener="#{listaForm.onCancel}"/>
+
+                        <f:facet name="footer">
+                            En total hay  <h:outputText value="#{listaForm.size}"/> formulario(s).
+                        </f:facet>
+                    </p:dataTable>
+                </h:form>
+
+                </td>
+                </tr>
+            </table>
+
+        </h:body>
+
+    </f:view>
+</html>
